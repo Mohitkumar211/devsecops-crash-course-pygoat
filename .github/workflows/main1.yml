@@ -1,26 +1,26 @@
-name: CI 
+name: Bandit SAST Scan
 
 on:
   push:
 
 jobs:
-  sast_scan:
-    name: Run Bandit Security Scan
+  sast:
     runs-on: ubuntu-latest
+    name: Run Bandit
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: '3.8'
 
       - name: Install Bandit
         run: pip install bandit
 
-      - name: Run Bandit and Generate JSON Report
+      - name: Run Bandit and Save Report
         run: |
           bandit -ll -ii -r . -f json -o bandit-report.json
 
