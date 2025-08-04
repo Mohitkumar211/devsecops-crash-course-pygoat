@@ -1,11 +1,11 @@
-name: CI
+name: CI - SAST Scan
 
 on:
   push:
 
 jobs:
   sast_scan:
-    name: Run Bandit scan
+    name: Run Bandit Security Scan
     runs-on: ubuntu-latest
 
     steps:
@@ -20,5 +20,12 @@ jobs:
       - name: Install Bandit
         run: pip install bandit
 
-      - name: Run Bandit Scan
-        run: bandit -r .
+      - name: Run Bandit and Generate JSON Report
+        run: |
+          bandit -ll -ii -r . -f json -o bandit-report.json
+
+      - name: Upload Bandit Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: bandit-report
+          path: bandit-report.json
